@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Nom			      : postinstallation.sh
-# Description	  : Script permettant de mettre en place une post-installation d'une Debian 11 fresh install
+# Nom			 : Debian11.sh
+# Description	 : Script permettant de mettre en place une post-installation d'une Debian 11 fresh install
 #
-# Fonctionnement: ./postinstallation.sh IP NETMASK GATEWAY DNS
-# Exemple		    : ./postinstallation.sh  192.168.10.20 255.255.255.0 192.168.1.1 1.1.1.1
+# Fonctionnement : ./Debian11.sh IP NETMASK GATEWAY DNS
+# Exemple		 : ./Debian11.sh  192.168.10.20 255.255.255.0 192.168.1.1 1.1.1.1
 #
-# Auteur		    : Mathis DI MASCIO
+# Auteur		 : Mathis DI MASCIO
 #
-# Version		    : 1.0
+# Version		 : 1.3
 
 if [ "$USER" != "root" ]
 then
@@ -21,7 +21,7 @@ if [ $# -ne 4 ]
 then
 	echo "Erreur de syntaxe"
 	echo "Veuillez entrer une config réseau"
-	echo "./postinstallation.sh  IP NETMASK GATEWAY DNS"
+	echo "./Debian11.sh  IP NETMASK GATEWAY DNS"
 	exit
 fi
 
@@ -164,7 +164,7 @@ service ssh restart
 # Generate ssh key
 ssh-keygen -t rsa -b 4096 -C "$lowUser@$(hostname)" -f ~/.ssh/id_rsa -N ""
 
-# Authentification par clés SSH de l'hôte vers la VM
+# Authentification by SSH key from host to serv
 if [[ ! -d "/home/$lowUser/.ssh" ]]
 then
 	mkdir -v /home/$lowUser/.ssh
@@ -172,7 +172,7 @@ fi
 
 chmod -v 700 /home/$lowUser/.ssh
 
-# Ajout de la clé publique dans le fichier authorized_keys
+# Add pub key in authorized_keys
 if [[ ! -f "/home/$lowUser/.ssh/authorized_keys" ]]
 then
 	touch /home/$lowUser/.ssh/authorized_keys
@@ -188,7 +188,7 @@ chown -Rv $lowUser:$lowUser  /home/$lowUser/.ssh
 chmod -v 640 /etc/ssh/sshd_config
 chmod -v 640 /etc/ssh/ssh_config
 
-# Installation de l'outil "cheat"
+# Installation off tools "cheat"
 cheat_file="cheat-linux-amd64"
 wget https://github.com/cheat/cheat/releases/download/4.2.3/$cheat_file.gz -P /tmp
 gunzip /tmp/$cheat_file.gz
