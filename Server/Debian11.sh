@@ -107,7 +107,7 @@ git clone https://github.com/Ezeqielle/aliases /usr/share/aliases
 chmod 666 /usr/share/aliases/.bash_aliases
 
 # custom prompt for user
-## Si l'utilisateur n'a pas de dossier on le crée et on l'alimente
+## If user doesn't have a folder on /home, we create it and we fill it
 if [[ ! -d "/home/$lowUser" ]]
 then
 	mkdir /home/$lowUser

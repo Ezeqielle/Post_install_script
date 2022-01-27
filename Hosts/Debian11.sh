@@ -1,14 +1,13 @@
 #!/bin/bash
 
 # Nom			 : Debian11.sh
-# Description	 : Script permettant de mettre en place une post-installation d'une Debian 11 fresh install
+# Description	 : Script for setup a debian 11 fresh install
 #
-# Fonctionnement : ./Debian11.sh <SSH_PORT>
-# Exemple		 : ./Debian11.sh  7252
+# Fonctionnement : ./Debian11.sh
 #
 # Auteur		 : Mathis DI MASCIO
 #
-# Version		 : 1.0
+# Version		 : 1.2
 
 if [ "$USER" != "root" ]
 then
@@ -17,27 +16,18 @@ then
 	exit
 fi
 
-if [ $# -ne 1 ]
-then
-    echo "Erreur de syntaxe"
-    echo "Veuillez entrer un port SSH"
-    echo "./Debian11.sh <SSH_PORT>"
-    exit
-fi
-
-SSHPORT=$1
 lowUser=$(grep 1000 /etc/passwd|cut -d: -f1)
 
-# Synchronisation avec une horloge atomique
+# Synchro time
 timedatectl set-timezone Europe/Paris
 timedatectl set-ntp off
 timedatectl set-ntp on
 
-# MAJ à la dernière version
+# MAJ
 apt-get update -y
 apt-get upgrade -y
 
-# Installation les packages vraiment utiles
+# Add some useful packages
 apt-get install	vim \
 				sudo \
 				mlocate \
@@ -68,7 +58,7 @@ git clone https://github.com/Ezeqielle/aliases /usr/share/aliases
 chmod 666 /usr/share/aliases/.bash_aliases
 
 # custom prompt for user
-## Si l'utilisateur n'a pas de dossier on le crée et on l'alimente
+## If user doesn't have a folder on /home, we create it and we fill it
 if [[ ! -d "/home/$lowUser" ]]
 then
 	mkdir /home/$lowUser
@@ -124,7 +114,7 @@ fi
 ssh-keygen -t rsa -b 4096 -C "$lowUser@$(hostname)" -f /home/$lowUser/.ssh/id_rsa -N ""
 chmod -v 700 /home/$lowUser/.ssh
 
-# Installation off tools "cheat"
+# Install "cheat" tool
 cheat_file="cheat-linux-amd64"
 wget https://github.com/cheat/cheat/releases/download/4.2.3/$cheat_file.gz -P /tmp
 gunzip /tmp/$cheat_file.gz
@@ -143,5 +133,5 @@ sed -i '/editor/ s;/vim;nano;' /home/$lowUser/.config/cheat/conf.yml
 
 cp -r /tmp/community/*   /home/$lowUser/.config/cheat/cheatsheets/community
 
-# On redemarre pour tout valider
+# We reboot for apply changes
 reboot
