@@ -60,6 +60,15 @@ apt-get install	vim \
 # save fstab
 cp /etc/fstab /etc/fstab.bak
 
+# add some aliases
+if [[  -f "/usr/share/.bash_aliases" ]]
+then
+	rm /usr/share/.bash_aliases
+fi
+git clone https://github.com/Ezeqielle/aliases /usr/share/
+mv /usr/share/aliases/.bash_aliases /usr/share/
+chmod 666 /usr/share/.bash_aliases
+
 # custom prompt for user
 ## Si l'utilisateur n'a pas de dossier on le crée et on l'alimente
 if [[ ! -d "/home/$lowUser" ]]
@@ -117,7 +126,7 @@ sed -i '/PermitEmptyPasswords/c\PermitEmptyPasswords no' /etc/ssh/sshd_config
 service ssh restart
 
 # Generate ssh key
-ssh-keygen -t rsa -b 4096 -C "$lowUser@$(hostname)" -f ~/.ssh/id_rsa -N ""
+ssh-keygen -t rsa -b 4096 -C "$lowUser@$(hostname)" -f /home/$lowUser/.ssh/id_rsa -N ""
 
 # Authentification by SSH key
 if [[ ! -d "/home/$lowUser/.ssh" ]]
