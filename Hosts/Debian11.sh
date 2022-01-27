@@ -25,7 +25,6 @@ then
     exit
 fi
 
-PUBKEY="<your SSH_KEY.pub>"
 SSHPORT=$1
 lowUser=$(grep 1000 /etc/passwd|cut -d: -f1)
 
@@ -61,9 +60,9 @@ apt-get install	vim \
 cp /etc/fstab /etc/fstab.bak
 
 # add some aliases
-if [[  -f "/usr/share/.bash_aliases" ]]
+if [[  -f "/usr/share/aliases/.bash_aliases" ]]
 then
-	rm /usr/share/.bash_aliases
+	rm /usr/share/aliases/*
 fi
 git clone https://github.com/Ezeqielle/aliases /usr/share/aliases
 chmod 666 /usr/share/aliases/.bash_aliases
@@ -117,41 +116,13 @@ source /home/$lowUser/.bashrc
 usermod -aG sudo $lowUser
 sudo -U $lowUser  -l
 
-# Configuration SSH
-sed -i '/Port 22/c\Port '$SSHPORT /etc/ssh/sshd_config
-sed -i '/PermitRootLogin/c\#PermitRootLogin yes' /etc/ssh/sshd_config
-sed -i '/PubkeyAuthentication/c\PubkeyAuthentication yes' /etc/ssh/sshd_config
-sed -i '/AuthorizedKeysFile/c\AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2' /etc/ssh/sshd_config
-sed -i '/#PasswordAuthentication/c\PasswordAuthentication no' /etc/ssh/sshd_config
-sed -i '/PermitEmptyPasswords/c\PermitEmptyPasswords no' /etc/ssh/sshd_config
-service ssh restart
-
 # Generate ssh key
-ssh-keygen -t rsa -b 4096 -C "$lowUser@$(hostname)" -f /home/$lowUser/.ssh/id_rsa -N ""
-
-# Authentification by SSH key
 if [[ ! -d "/home/$lowUser/.ssh" ]]
 then
 	mkdir -v /home/$lowUser/.ssh
 fi
-
+ssh-keygen -t rsa -b 4096 -C "$lowUser@$(hostname)" -f /home/$lowUser/.ssh/id_rsa -N ""
 chmod -v 700 /home/$lowUser/.ssh
-
-# Add pub key in authorized_keys
-if [[ ! -f "/home/$lowUser/.ssh/authorized_keys" ]]
-then
-	touch /home/$lowUser/.ssh/authorized_keys
-fi
-
-cat >> /home/$lowUser/.ssh/authorized_keys << EOF
-$PUBKEY
-EOF
-
-chmod -v 600 /home/$lowUser/.ssh/authorized_keys
-chown -Rv $lowUser:$lowUser  /home/$lowUser/.ssh
-
-chmod -v 640 /etc/ssh/sshd_config
-chmod -v 640 /etc/ssh/ssh_config
 
 # Installation off tools "cheat"
 cheat_file="cheat-linux-amd64"
