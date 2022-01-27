@@ -43,7 +43,6 @@ apt-get install	vim \
 				sudo \
 				mlocate \
 				net-tools \
-				lynx \
 				tree \
 				pigz \
 				pixz \
@@ -83,6 +82,7 @@ then
 fi
 
 cat >> /home/$lowUser/.bashrc << EOF
+# Custom prompt for user
 export LS_OPTIONS='--color=auto'
 eval "$(dircolors)"
 export PS1="\A \[$(tput sgr0)\]\[\033[38;5;47m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;99m\]\h\[$(tput sgr0)\]:\w > \[$(tput sgr0)\]"
@@ -90,6 +90,7 @@ EOF
 
 # Custom prompt for root
 cat >> /root/.bashrc << EOF
+# Custom prompt for root
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -118,23 +119,13 @@ service ssh restart
 # Generate ssh key
 ssh-keygen -t rsa -b 4096 -C "$lowUser@$(hostname)" -f ~/.ssh/id_rsa -N ""
 
-# Authentification par clés SSH de l'hôte vers la VM
+# Authentification by SSH key
 if [[ ! -d "/home/$lowUser/.ssh" ]]
 then
 	mkdir -v /home/$lowUser/.ssh
 fi
 
 chmod -v 700 /home/$lowUser/.ssh
-
-# Ajout de la clé publique dans le fichier authorized_keys
-if [[ ! -f "/home/$lowUser/.ssh/authorized_keys" ]]
-then
-	touch /home/$lowUser/.ssh/authorized_keys
-fi
-
-cat >> /home/$lowUser/.ssh/authorized_keys << EOF
-$PUBKEY
-EOF
 
 # Add pub key in authorized_keys
 if [[ ! -f "/home/$lowUser/.ssh/authorized_keys" ]]
