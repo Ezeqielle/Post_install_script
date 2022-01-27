@@ -54,16 +54,16 @@ EOF
 #systemctl restart networking 
 ifdown enp0s3 && ifup enp0s3 --force
 
-# Synchronisation avec une horloge atomique
+# Synchro time
 timedatectl set-timezone Europe/Paris
 timedatectl set-ntp off
 timedatectl set-ntp on
 
-# MAJ à la dernière version
+# MAJ
 apt-get update -y
 apt-get upgrade -y
 
-# Suppression des packages inutiles
+# Remove useless package for server
 apt-get purge  bluez \
 			   bluetooth \
 			   wpasupplicant \
@@ -72,7 +72,7 @@ apt-get purge  bluez \
 			   -y
 apt-get autoremove -y
 
-# Installation les packages vraiment utiles
+# Add some useful packages
 apt-get install	vim \
 				sudo \
 				rsync \
