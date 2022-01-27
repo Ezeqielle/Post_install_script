@@ -65,9 +65,8 @@ if [[  -f "/usr/share/.bash_aliases" ]]
 then
 	rm /usr/share/.bash_aliases
 fi
-git clone https://github.com/Ezeqielle/aliases /usr/share/
-mv /usr/share/aliases/.bash_aliases /usr/share/
-chmod 666 /usr/share/.bash_aliases
+git clone https://github.com/Ezeqielle/aliases /usr/share/aliases
+chmod 666 /usr/share/aliases/.bash_aliases
 
 # custom prompt for user
 ## Si l'utilisateur n'a pas de dossier on le crée et on l'alimente
@@ -109,9 +108,11 @@ eval "$(dircolors)"
 export PS1="\A \[$(tput sgr0)\]\[\033[38;5;1m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;99m\]\h\[$(tput sgr0)\]:\w > \[$(tput sgr0)\]"
 EOF
 
-ln /usr/share/.bash_aliases /root/.bash_aliases
-ln /usr/share/.bash_aliases /home/$lowUser/.bash_aliases
-source /usr/share/.bash_aliases
+ln /usr/share/aliases/.bash_aliases /root/.bash_aliases
+ln /usr/share/aliases/.bash_aliases /home/$lowUser/.bash_aliases
+source /usr/share/aliases/.bash_aliases
+source /root/.bashrc
+source /home/$lowUser/.bashrc
 
 usermod -aG sudo $lowUser
 sudo -U $lowUser  -l
