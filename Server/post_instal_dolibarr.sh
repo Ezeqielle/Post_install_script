@@ -349,5 +349,3 @@ vgcfgbackup -f /root/backups/VG.backup  VG_CRYPT
 dd if=/dev/sda1 of=/root/backups/boot.backup
 
 dd if=/dev/sda2 of=/root/backups/efi.backup
-
-# ./setup.sh 172.16.42.128 255.255.255.0 172.16.42.2 8.8.8.8
