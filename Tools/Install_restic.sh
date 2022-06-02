@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # Nom			 : Install_restic.sh
 # Description	 	 : Script permettant l'installation de restic
