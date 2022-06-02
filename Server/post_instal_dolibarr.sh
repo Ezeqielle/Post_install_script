@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Nom			 : Debian11.sh
-# Description	 : Script permettant de mettre en place une post-installation d'une Debian 11 fresh install
+# Description	 	 : Script permettant de mettre en place une post-installation d'une Debian 11 fresh install
 #
-# Fonctionnement : ./Debian11.sh IP NETMASK GATEWAY DNS
+# Fonctionnement 	 : ./Debian11.sh IP NETMASK GATEWAY DNS
 # Exemple		 : ./Debian11.sh  192.168.10.20 255.255.255.0 192.168.1.1 1.1.1.1
 #
 # Auteur		 : Mathis DI MASCIO / Peter BALIVET
