@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Nom			 : tools.sh
-# Description	 : Script for setup a bunch of tools
-# Fonctionnement : ./tools.sh
+# Nom			       : Install_docker_portainer.sh
+# Description	   : Install docker docker-compose portainer
+# Fonctionnement : ./Install_docker_portainer.sh
 #
-# Auteur		 : Mathis DI MASCIO
+# Auteur		     : Mathis DI MASCIO
 #
-# Version		 : 1.0
+# Version		     : 1.0
 
 if [ "$USER" != "root" ]
 then

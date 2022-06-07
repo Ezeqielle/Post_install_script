@@ -1,13 +1,14 @@
 #!/bin/bash
 
-# Nom			 : Debian11.sh
-# Description	 : Script for setup a debian 11 fresh install
+# Nom			       : Debian11.sh
+# Description	   : Script permettant de mettre en place une post-installation d'une Debian 11 fresh install
 #
 # Fonctionnement : ./Debian11.sh
+# Exemple		     : ./Debian11.sh
 #
-# Auteur		 : Mathis DI MASCIO
+# Auteur		     : Mathis DI MASCIO
 #
-# Version		 : 1.2
+# Version		     : 1.2
 
 if [ "$USER" != "root" ]
 then

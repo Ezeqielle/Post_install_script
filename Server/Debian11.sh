@@ -10,12 +10,12 @@
 #
 # Version		 : 1.3
 
-if [ "$USER" != "root" ]
+if [ "$EUID" -ne 0 ]
 then
 	echo "Erreur de fonctionnement"
 	echo "Veuillez lancer le programme en tant que ROOT"
 	exit
-fi	
+fi
 
 if [ $# -ne 4 ]
 then
