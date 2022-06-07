@@ -53,3 +53,4 @@ setupRoot () {
 
 # MAIN
 setupUsers $nonRootUser
+setupRoot
