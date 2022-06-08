@@ -79,17 +79,6 @@ EOF
 	service nginx restart
 
 	mysql --user="root" --password="$ROOTPASSWORD" --execute="CREATE DATABASE $DOLIDB;CREATE USER '$DOLIDBUSER'@'localhost' IDENTIFIED BY '$DOLIDBPASS';GRANT ALL PRIVILEGES ON $DOLIDB.* TO '$DOLIDBUSER'@'localhost';FLUSH PRIVILEGES;EXIT;"
-
-	cat > /root/save_dolibarr_db.sh << EOF
-#!/bin/bash
-mysqldump --user="$DOLIDBUSER" --password="$DOLIDBPASS" $DOLIDB > "/root/db_backups/export_$(date +"%F").sql"
-EOF
-
-    cat > /root/archive_dolibarr_db.sh << EOF
-#!/bin/bash
-cd /root
-tar czf /root/db_archives/archive_$(date +"%F").tar.gz db_backups
-EOF
 }
 
 # FOLDER
@@ -100,8 +89,8 @@ setupFolder() {
 
 # CRON
 setupCron() {
-    echo '0 */6 * * * mysqldump --user="$DOLIDBUSER" --password="$DOLIDBPASS" $DOLIDB > "/root/db_backups/export_$(date +"%F").sql" >/dev/null 2>&1"' >> /etc/crontab
-    echo '0 3 * * 0 cd /backup && tar czf /backup/db_archives/archive_$(date +"%F").tar.gz db_backups >/dev/null 2>&1' >> /etc/crontab
+    echo '0 */6 * * * mysqldump --user="$DOLIDBUSER" --password="$DOLIDBPASS" $DOLIDB > /root/db_backups/export_$(date +"%F").sql' >> /etc/crontab
+    echo '0 3 * * 0 cd /backup && tar czf /backup/db_archives/archive_$(date +"%F").tar.gz db_backups' >> /etc/crontab
 }
 
 # MAIN
