@@ -5,8 +5,6 @@ if [ "$USER" != "root" ]; then
     exit 1
 fi
 
-lowUser=$(grep 1000 /etc/passwd | cut -d: -f1)
-
 # Synchro time
 timedatectl set-timezone Europe/Paris
 timedatectl set-ntp off
@@ -16,15 +14,41 @@ timedatectl set-ntp on
 apt-get install git vim curl wget -y
 
 # Install aliases
-if [[  -f "/usr/share/aliases/.bash_aliases" ]]
-then
-	rm /usr/share/aliases/*
-fi
-git clone https://github.com/Ezeqielle/aliases /usr/share/aliases
-chmod 666 /usr/share/aliases/.bash_aliases
+GITHUB="https://github.com/Ezeqielle"
+nonRootUser=$(grep 1000 /etc/passwd|cut -d: -f1)
 
-ln /usr/share/aliases/.bash_aliases /root/.bash_aliases
-ln /usr/share/aliases/.bash_aliases /home/$lowUser/.bash_aliases
-source /usr/share/aliases/.bash_aliases
-source /root/.bashrc
-source /home/$lowUser/.bashrc
+# Aliases
+setupUser() {
+    if [[ ! -d "/home/$1" ]]
+    then
+       echo "User $1 don't have home directory"
+    else
+        ln /usr/share/aliases/.bash_aliases /home/$1/.bash_aliases
+    fi
+}
+
+# Set aliases for all non root users
+setupUsers () {
+
+	# Setup bash aliases accessible for all users
+	if [[  -f "/usr/share/.bash_aliases" ]]
+	then
+		rm /usr/share/.bash_aliases
+	fi
+	git clone $GITHUB/aliases /usr/share/aliases
+	chmod 666 /usr/share/aliases/.bash_aliases
+
+	for user in "$@"
+	do
+		setupUser $user
+	done
+}
+
+# Set aliases for root user
+setupRoot () {
+    ln /usr/share/aliases/.bash_aliases /root/.bash_aliases
+}
+
+# MAIN
+setupUsers $nonRootUser
+setupRootrc
